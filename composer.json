@@ -21,7 +21,7 @@
         "aidan-casey/mock-client": "dev-master",
         "ergebnis/composer-normalize": "dev-main",
         "friendsofphp/php-cs-fixer": "dev-master",
-        "guzzlehttp/guzzle": "^7.9",
+        "nyholm/psr7": "^1.8@dev",
         "phpstan/phpstan": "2.0.x-dev",
         "phpunit/phpunit": "^11.4"
     },
