@@ -23,7 +23,7 @@ final class RestClientTest extends TestCase
         parent::setUp();
 
         $this->client = new Client();
-        $this->configuration = new RestClientConfiguration(psrClient: $this->client);
+        $this->configuration = new RestClientConfiguration(httpClient: $this->client);
     }
 
     public function test_explicit_boolean_query_parameters()
@@ -40,7 +40,7 @@ final class RestClientTest extends TestCase
     public function test_disabling_explicit_boolean_query_parameters()
     {
         $restClient = new RestClient(new RestClientConfiguration(
-            psrClient: $this->client,
+            httpClient: $this->client,
             disableExplicitBooleans: true,
         ));
 
@@ -143,5 +143,29 @@ final class RestClientTest extends TestCase
         $restClient->executeTrace('https://testing.com');
 
         $this->client->assertMethod('TRACE');
+    }
+
+    public function test_base_uri_with_path()
+    {
+        $restClient = new RestClient(new RestClientConfiguration(
+            baseUri: 'https://testing.com',
+            httpClient: $this->client,
+        ));
+
+        $restClient->executeGet('/testing');
+
+        $this->client->assertUri('https://testing.com/testing');
+    }
+
+    public function test_base_uri_with_full_uri()
+    {
+        $restClient = new RestClient(new RestClientConfiguration(
+            baseUri: 'https://testing.com',
+            httpClient: $this->client,
+        ));
+
+        $restClient->executeGet('https://example.org');
+
+        $this->client->assertUri('https://example.org');
     }
 }
