@@ -3,9 +3,9 @@
 namespace Rest\Http\Request;
 
 use Rest\Authenticators\Authenticator;
+use Rest\Http\Method;
 use Rest\Http\Parameters\ImmutableParameterCollection;
 use Rest\Http\Parameters\MutableParameterCollection;
-use Rest\Method;
 
 final class RestRequestBuilder
 {

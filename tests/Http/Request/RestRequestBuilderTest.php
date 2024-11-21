@@ -4,9 +4,9 @@ namespace Rest\Tests\Http\Request;
 
 use PHPUnit\Framework\TestCase;
 use Rest\Authenticators\BearerAuthenticator;
+use Rest\Http\Method;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\Request\RestRequestBuilder;
-use Rest\Method;
 
 final class RestRequestBuilderTest extends TestCase
 {

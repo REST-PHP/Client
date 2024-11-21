@@ -3,8 +3,8 @@
 namespace Rest\Http\Request;
 
 use Rest\Authenticators\Authenticator;
+use Rest\Http\Method;
 use Rest\Http\Parameters\ImmutableParameterCollection;
-use Rest\Method;
 
 final readonly class RestRequest
 {

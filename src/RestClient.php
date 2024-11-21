@@ -6,6 +6,7 @@ namespace Rest;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Rest\Http\Method;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\Request\RestRequestBuilder;
 use Rest\Http\Response\RestResponse;

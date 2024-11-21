@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rest;
+namespace Rest\Http;
 
 enum Method: string
 {
