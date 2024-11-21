@@ -10,8 +10,9 @@
     ],
     "require": {
         "php": "^8.4",
+        "guzzlehttp/guzzle": "^7.0",
+        "psr-discovery/discovery": "dev-add-try-catch as 1.1.0",
         "psr-discovery/http-client-implementations": "^1.2",
-        "psr-discovery/http-factory-implementations": "^1.1",
         "psr/http-client": "^1.0",
         "psr/http-client-implementation": "^1.0",
         "psr/http-factory": "^1.1",
@@ -26,15 +27,20 @@
         "phpstan/phpstan": "2.0.x-dev",
         "phpunit/phpunit": "^11.4"
     },
-    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/aidan-casey/discovery"
+        }
+    ],
     "autoload": {
         "psr-4": {
-            "Rest\\Http\\": "src/"
+            "Rest\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rest\\Http\\Tests\\": "tests/"
+            "Rest\\Tests\\": "tests/"
         }
     },
     "config": {

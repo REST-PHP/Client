@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Rest\Http\Authenticators;
+namespace Rest\Authenticators;
 
-use Rest\Http\Request\RestRequest;
-use Rest\Http\RestClientInterface;
+use Rest\Http\Request\RestRequestBuilder;
+use Rest\RestClientInterface;
 
 interface Authenticator
 {
-    public function authenticate(RestClientInterface $client, RestRequest $request): RestRequest;
+    public function authenticate(RestClientInterface $client, RestRequestBuilder &$request): void;
 }

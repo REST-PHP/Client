@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Rest\Http;
+namespace Rest;
 
-use Rest\Http\Request\RestRequest;
 use Rest\Http\Response\RestResponse;
 
 interface RestClientInterface

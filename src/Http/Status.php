@@ -7,7 +7,7 @@ namespace Rest\Http;
 final readonly class Status
 {
     public function __construct(
-        public int $code,
+        public StatusCode $code,
         public string $message,
     ) {
     }

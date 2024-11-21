@@ -1,17 +1,17 @@
 <?php
 
-namespace Rest\Http\Authenticators;
+namespace Rest\Authenticators;
 
-use Rest\Http\Request\RestRequest;
-use Rest\Http\RestClientInterface;
+use Rest\Http\Request\RestRequestBuilder;
+use Rest\RestClientInterface;
 
 final readonly class BearerAuthenticator implements Authenticator
 {
     public function __construct(private string $token)
     {}
 
-    public function authenticate(RestClientInterface $client, RestRequest $request): RestRequest
+    public function authenticate(RestClientInterface $client, RestRequestBuilder &$request): void
     {
-        return $request->addHeader('Authorization', 'Bearer ' . $this->token);
+        $request->withHeader('Authorization', 'Bearer ' . $this->token);
     }
 }

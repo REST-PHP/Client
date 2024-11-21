@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Rest\Http;
+namespace Rest;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use PsrDiscovery\Discover;
-use Rest\Http\Authenticators\Authenticator;
+use Rest\Authenticators\Authenticator;
 use RuntimeException;
 
 final readonly class RestClientConfiguration

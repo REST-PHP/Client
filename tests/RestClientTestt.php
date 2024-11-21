@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Rest\Http\Tests;
+namespace Rest\Tests;
 
 use AidanCasey\MockClient\Client;
 use PHPUnit\Framework\TestCase;
-use Rest\Http\RestClient;
-use Rest\Http\RestClientConfiguration;
+use Rest\RestClient;
+use Rest\RestClientConfiguration;
 
 /**
  * @internal
  */
-final class RestClientTest extends TestCase
+final class RestClientTestt extends TestCase
 {
     private Client $client;
 

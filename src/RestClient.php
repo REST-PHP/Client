@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Rest\Http;
+namespace Rest;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Rest\Http\Request\RestRequest;
+use Rest\Http\Request\RestRequestBuilder;
 use Rest\Http\Response\RestResponse;
+use Rest\Http\Status;
 
 final readonly class RestClient implements RestClientInterface
 {
@@ -21,13 +23,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executeGet(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::GET)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::GET)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -36,13 +38,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executePost(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::POST)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::POST)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -51,13 +53,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executeDelete(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::DELETE)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::DELETE)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -66,13 +68,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executePut(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::PUT)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::PUT)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -81,13 +83,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executePatch(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::PATCH)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::PATCH)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -96,13 +98,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executeHead(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::HEAD)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::HEAD)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -111,13 +113,13 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executeOptions(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::OPTIONS)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::OPTIONS)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
     /**
@@ -126,25 +128,23 @@ final readonly class RestClient implements RestClientInterface
      */
     public function executeTrace(string $uri, array $query = [], array $headers = [], ?string $body = null): RestResponse
     {
-        $request = RestRequest::new($uri)
-            ->setMethod(Method::TRACE)
-            ->addQueryParameters($query)
-            ->addHeaders($headers)
-            ->setBody($body);
-
-        return $this->execute($request);
+        return $this->execute(
+            new RestRequestBuilder($uri)
+                ->withMethod(Method::TRACE)
+                ->withQueryParameters($query)
+                ->withHeaders($headers)
+                ->withBody($body)
+        );
     }
 
-    public function execute(RestRequest $request): RestResponse
+    public function execute(RestRequestBuilder $request): RestResponse
     {
         // If applicable, authenticate the request.
-        $authenticator = $request->getAuthenticator() ?? $this->config->authenticator;
-
-        if ($authenticator) {
-            $authenticator->authenticate($this, $request);
-        }
+        $authenticator = $request->authenticator ?? $this->config->authenticator;
+        $authenticator?->authenticate($this, $request);
 
         // Convert the RestRequest object to a PSR Request.
+        $request = $request->make();
         $psrRequest = $this->restRequestToPsrRequest($request);
 
         // Use the PSR client to send the PSR request.
@@ -187,7 +187,7 @@ final readonly class RestClient implements RestClientInterface
         );
 
         $response
-            ->setContent($contents)
+            ->withContent($contents)
             ->setHeaders($headers);
     }
 
