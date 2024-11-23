@@ -19,6 +19,14 @@ final class RestResponseBuilder
 
     private(set) ?string $body = null;
 
+    public static function fromResponse(RestResponse $response): self
+    {
+        return new self($response->request, $response->statusCode)
+            ->withReasonPhrase($response->reasonPhrase)
+            ->withHeaders($response->headers->all())
+            ->withBody($response->body);
+    }
+
     public function __construct(RestRequest $request, StatusCode $statusCode = StatusCode::OK)
     {
         $this->headers = new MutableParameterCollection();

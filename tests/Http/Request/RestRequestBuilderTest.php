@@ -5,8 +5,10 @@ namespace Rest\Tests\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Rest\Authenticators\BearerAuthenticator;
 use Rest\Http\Method;
+use Rest\Http\Parameters\ImmutableParameterCollection;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\Request\RestRequestBuilder;
+use Rest\Http\Segments\ImmutableSegmentCollection;
 
 final class RestRequestBuilderTest extends TestCase
 {
@@ -122,5 +124,35 @@ final class RestRequestBuilderTest extends TestCase
             ->make();
 
         $this->assertSame(19, $request->segments->get('id'));
+    }
+
+    public function test_making_a_request_builder_from_a_request()
+    {
+        $request = new RestRequest(
+            resource: 'users/{id}',
+            method: Method::PUT,
+            queryParameters: new ImmutableParameterCollection([
+                'first_name' => ['John'],
+            ]),
+            headers: new ImmutableParameterCollection([
+                'Content-Type' => ['application/xml'],
+            ]),
+            segments: new ImmutableSegmentCollection([
+                'id' => 12,
+            ]),
+            body: 'Hello World',
+            authenticator: new BearerAuthenticator('test-token'),
+        );
+
+        $requestBuilder = RestRequestBuilder::fromRequest($request);
+
+        $this->assertInstanceOf(RestRequestBuilder::class, $requestBuilder);
+        $this->assertEquals($request->resource, $requestBuilder->resource);
+        $this->assertEquals($request->method, $requestBuilder->method);
+        $this->assertEqualsCanonicalizing($request->queryParameters->all(), $requestBuilder->queryParameters->all());
+        $this->assertEqualsCanonicalizing($request->headers->all(), $requestBuilder->headers->all());
+        $this->assertEqualsCanonicalizing($request->segments->all(), $requestBuilder->segments->all());
+        $this->assertEquals($request->body, $requestBuilder->body);
+        $this->assertEquals($request->authenticator, $requestBuilder->authenticator);
     }
 }

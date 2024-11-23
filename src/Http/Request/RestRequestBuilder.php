@@ -25,13 +25,24 @@ final class RestRequestBuilder
 
     private(set) MutableSegmentCollection $segments;
 
+    public static function fromRequest(RestRequest $request): RestRequestBuilder
+    {
+        return new self($request->resource)
+            ->withAuthenticator($request->authenticator)
+            ->withBody($request->body)
+            ->withHeaders($request->headers->all())
+            ->withQueryParameters($request->queryParameters->all())
+            ->withMethod($request->method)
+            ->withSegments($request->segments->all());
+    }
+
     public function __construct(string $resource)
     {
-        $this->withResource($resource);
-
         $this->headers = new MutableParameterCollection();
         $this->queryParameters = new MutableParameterCollection();
         $this->segments = new MutableSegmentCollection();
+
+        $this->withResource($resource);
     }
 
     public function withResource(string $resource): self
@@ -116,6 +127,18 @@ final class RestRequestBuilder
     public function withSegment(string $name, string|int $value): self
     {
         $this->segments->set($name, $value);
+
+        return $this;
+    }
+
+    /**
+     * @param array<string,string|int> $segments
+     */
+    public function withSegments(array $segments): self
+    {
+        foreach ($segments as $segment => $value) {
+            $this->withSegment($segment, $value);
+        }
 
         return $this;
     }
