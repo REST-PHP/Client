@@ -12,7 +12,7 @@ use Rest\RestClientConfiguration;
 /**
  * @internal
  */
-final class RestClientTestt extends TestCase
+final class RestClientTest extends TestCase
 {
     private Client $client;
 

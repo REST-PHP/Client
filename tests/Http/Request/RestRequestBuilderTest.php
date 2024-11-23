@@ -114,4 +114,13 @@ final class RestRequestBuilderTest extends TestCase
         $this->assertSame(['my-query'], $request->queryParameters->get('search'));
         $this->assertSame(['John', 'Jack'], $request->queryParameters->get('first_name'));
     }
+
+    public function test_making_a_request_with_a_segment()
+    {
+        $request = new RestRequestBuilder('users/{id}')
+            ->withSegment('id', 19)
+            ->make();
+
+        $this->assertSame(19, $request->segments->get('id'));
+    }
 }

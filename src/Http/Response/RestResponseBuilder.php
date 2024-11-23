@@ -2,6 +2,8 @@
 
 namespace Rest\Http\Response;
 
+use Rest\Http\Parameters\ImmutableParameterCollection;
+use Rest\Http\Parameters\MutableParameterCollection;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\StatusCode;
 
@@ -13,10 +15,14 @@ final class RestResponseBuilder
 
     private(set) string $reasonPhrase = '';
 
+    private(set) MutableParameterCollection $headers;
+
     private(set) ?string $body = null;
 
     public function __construct(RestRequest $request, StatusCode $statusCode = StatusCode::OK)
     {
+        $this->headers = new MutableParameterCollection();
+
         $this
             ->withRequest($request)
             ->withStatusCode($statusCode);
@@ -43,6 +49,17 @@ final class RestResponseBuilder
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $headers
+     * @return $this
+     */
+    public function withHeaders(array $headers): self
+    {
+        $this->headers->merge($headers);
+
+        return $this;
+    }
+
     public function withBody(?string $body): self
     {
         $this->body = $body;
@@ -56,6 +73,7 @@ final class RestResponseBuilder
             request: $this->request,
             statusCode: $this->statusCode,
             reasonPhrase: $this->reasonPhrase,
+            headers: new ImmutableParameterCollection($this->headers->all()),
             body: $this->body,
         );
     }

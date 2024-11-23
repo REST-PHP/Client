@@ -7,15 +7,18 @@ trait ReadsParameters
     /**
      * @param array<string,string[]> $parameters
      */
-    public function __construct(private array $parameters = [])
+    final public function __construct(private array $parameters = [])
     {}
 
+    /**
+     * @return array<string>|null
+     */
     public function get(string $key): ?array
     {
         return $this->parameters[$key] ?? null;
     }
 
-    public function first(string $key): ?string
+    public function first(string $key): null|string
     {
         return $this->parameters[$key][0] ?? null;
     }

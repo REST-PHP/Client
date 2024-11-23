@@ -22,7 +22,6 @@
     "require-dev": {
         "aidan-casey/mock-client": "dev-master",
         "ergebnis/composer-normalize": "dev-main",
-        "friendsofphp/php-cs-fixer": "dev-master",
         "nyholm/psr7": "^1.8@dev",
         "phpstan/phpstan": "2.0.x-dev",
         "phpunit/phpunit": "^11.4"
@@ -52,13 +51,12 @@
     "scripts": {
         "composer-normalize": "@composer normalize",
         "composer-validate": "@composer validate",
-        "fix-styling": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "coverage": "vendor/bin/phpunit --coverage-html ./build/coverage",
         "phpstan": "vendor/bin/phpstan",
         "phpunit": "vendor/bin/phpunit",
         "qa": [
             "@composer-normalize",
             "@composer-validate",
-            "@fix-styling",
             "@phpunit",
             "@phpstan"
         ]

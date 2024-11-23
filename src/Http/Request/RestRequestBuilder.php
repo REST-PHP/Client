@@ -6,6 +6,8 @@ use Rest\Authenticators\Authenticator;
 use Rest\Http\Method;
 use Rest\Http\Parameters\ImmutableParameterCollection;
 use Rest\Http\Parameters\MutableParameterCollection;
+use Rest\Http\Segments\ImmutableSegmentCollection;
+use Rest\Http\Segments\MutableSegmentCollection;
 
 final class RestRequestBuilder
 {
@@ -21,12 +23,15 @@ final class RestRequestBuilder
 
     private(set) MutableParameterCollection $queryParameters;
 
+    private(set) MutableSegmentCollection $segments;
+
     public function __construct(string $resource)
     {
         $this->withResource($resource);
 
         $this->headers = new MutableParameterCollection();
         $this->queryParameters = new MutableParameterCollection();
+        $this->segments = new MutableSegmentCollection();
     }
 
     public function withResource(string $resource): self
@@ -64,6 +69,9 @@ final class RestRequestBuilder
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $headers
+     */
     public function withHeaders(array $headers): self
     {
         $this->headers->merge($headers);
@@ -78,6 +86,9 @@ final class RestRequestBuilder
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $headers
+     */
     public function replaceHeaders(array $headers): self
     {
         $this->headers->replace($headers);
@@ -92,9 +103,19 @@ final class RestRequestBuilder
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $queryParameters
+     */
     public function withQueryParameters(array $queryParameters): self
     {
         $this->queryParameters->merge($queryParameters);
+
+        return $this;
+    }
+
+    public function withSegment(string $name, string|int $value): self
+    {
+        $this->segments->set($name, $value);
 
         return $this;
     }
@@ -106,6 +127,7 @@ final class RestRequestBuilder
             method: $this->method,
             queryParameters: new ImmutableParameterCollection($this->queryParameters->all()),
             headers: new ImmutableParameterCollection($this->headers->all()),
+            segments: new ImmutableSegmentCollection($this->segments->all()),
             body: $this->body,
             authenticator: $this->authenticator,
         );

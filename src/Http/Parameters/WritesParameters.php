@@ -29,6 +29,9 @@ trait WritesParameters
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $parameters
+     */
     public function merge(array $parameters): self
     {
         foreach ($parameters as $key => $value) {
@@ -44,6 +47,9 @@ trait WritesParameters
         return $this;
     }
 
+    /**
+     * @param array<string,string|string[]> $parameters
+     */
     public function replace(array $parameters): self
     {
         $this->parameters = [];
