@@ -1,4 +1,6 @@
 # Rest Client
+[![Coverage Status](https://coveralls.io/repos/github/REST-PHP/Client/badge.svg?branch=main)](https://coveralls.io/github/REST-PHP/Client?branch=main)
+
 This library is a lightweight, flexible PHP client for making REST API requests. It simplifies HTTP request handling by offering a builder-pattern interface for constructing requests and converting responses. This client supports all common HTTP methods and adheres to PSR standards, ensuring compatibility with existing PHP libraries and frameworks.
 
 ## Installation
