@@ -25,7 +25,7 @@ jobs:
           - prefer-stable
           - prefer-lowest
 
-    name: "Run Tests: PHP ${{ matrix.php }} - ${{ matrix.stability }}"
+    name: "Run Tests: ${{ matrix.os }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}"
 
     steps:
       - name: Checkout code
