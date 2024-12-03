@@ -43,4 +43,12 @@ jobs:
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: phpunit
+        run: vendor/bin/phpunit --coverage-clover build/reports/clover.xml
+
+      # Only upload coverage once.
+      - if: matrix.php == '8.4' && matrix.os == 'ubuntu-latest' && matrix.stability == 'prefer-stable'
+        name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          file: build/reports/clover.xml
