@@ -1,10 +1,6 @@
 name: Unit Tests
 
 on:
-  # Todo: Remove with branch protection
-  push:
-    branches:
-      - main
   pull_request:
   workflow_dispatch:
   schedule:
