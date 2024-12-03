@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Tests\Authenticators;
 
 use PHPUnit\Framework\TestCase;
@@ -7,6 +9,9 @@ use Rest\Authenticators\BearerAuthenticator;
 use Rest\Http\Request\RestRequestBuilder;
 use Rest\RestClient;
 
+/**
+ * @internal
+ */
 class BearerAuthenticatorTest extends TestCase
 {
     public function test_authorization_header_is_added()

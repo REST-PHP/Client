@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Rest;
 
+use const PHP_QUERY_RFC3986;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Rest\Http\Components\QueryParameters\ImmutableQueryParameterCollection;
 use Rest\Http\Method;
-use Rest\Http\Parameters\ImmutableParameterCollection;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\Request\RestRequestBuilder;
 use Rest\Http\Response\RestResponse;
 use Rest\Http\Response\RestResponseBuilder;
 use Rest\Http\StatusCode;
-use const PHP_QUERY_RFC3986;
 
 final readonly class RestClient implements RestClientInterface
 {
@@ -168,8 +168,11 @@ final readonly class RestClient implements RestClientInterface
             uri: $uri
         );
 
-        foreach ($request->headers->all() as $name => $value) {
-            $psrRequest = $psrRequest->withHeader($name, $value);
+        foreach ($request->headers->all() as $name => $headers) {
+            foreach ($headers as $value) {
+                // TODO: Remove this. It's just to make PHPStan happy.
+                $psrRequest = $psrRequest->withAddedHeader($name, strval($value));
+            }
         }
 
         if ($request->body) {
@@ -195,7 +198,7 @@ final readonly class RestClient implements RestClientInterface
             ->make();
     }
 
-    private function assembleUri(string $uri, ImmutableParameterCollection $queryParameters): string
+    private function assembleUri(string $uri, ImmutableQueryParameterCollection $queryParameters): string
     {
         // If the resource doesn't have a protocol, prepend our base uri.
         if (! $this->isUri($uri)) {
@@ -234,4 +237,3 @@ final readonly class RestClient implements RestClientInterface
             || str_starts_with($uri, '//');
     }
 }
-

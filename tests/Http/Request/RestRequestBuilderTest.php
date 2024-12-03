@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Tests\Http\Request;
 
 use PHPUnit\Framework\TestCase;
 use Rest\Authenticators\BearerAuthenticator;
+use Rest\Http\Components\Headers\ImmutableHeaderCollection;
+use Rest\Http\Components\QueryParameters\ImmutableQueryParameterCollection;
+use Rest\Http\Components\Segments\ImmutableSegmentCollection;
 use Rest\Http\Method;
-use Rest\Http\Parameters\ImmutableParameterCollection;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\Request\RestRequestBuilder;
-use Rest\Http\Segments\ImmutableSegmentCollection;
 
+/**
+ * @internal
+ */
 final class RestRequestBuilderTest extends TestCase
 {
     public function test_making_a_request()
@@ -101,7 +107,7 @@ final class RestRequestBuilderTest extends TestCase
             ->withQueryParameter('search', 'my-query')
             ->make();
 
-        $this->assertSame(['my-query'], $request->queryParameters->get('search'));
+        $this->assertSame('my-query', $request->queryParameters->get('search'));
     }
 
     public function test_making_a_request_with_query_parameters()
@@ -131,10 +137,10 @@ final class RestRequestBuilderTest extends TestCase
         $request = new RestRequest(
             resource: 'users/{id}',
             method: Method::PUT,
-            queryParameters: new ImmutableParameterCollection([
+            queryParameters: new ImmutableQueryParameterCollection([
                 'first_name' => ['John'],
             ]),
-            headers: new ImmutableParameterCollection([
+            headers: new ImmutableHeaderCollection([
                 'Content-Type' => ['application/xml'],
             ]),
             segments: new ImmutableSegmentCollection([

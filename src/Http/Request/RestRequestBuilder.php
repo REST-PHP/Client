@@ -3,11 +3,10 @@
 namespace Rest\Http\Request;
 
 use Rest\Authenticators\Authenticator;
+use Rest\Http\Components\Headers\MutableHeaderCollection;
+use Rest\Http\Components\QueryParameters\MutableQueryParameterCollection;
+use Rest\Http\Components\Segments\MutableSegmentCollection;
 use Rest\Http\Method;
-use Rest\Http\Parameters\ImmutableParameterCollection;
-use Rest\Http\Parameters\MutableParameterCollection;
-use Rest\Http\Segments\ImmutableSegmentCollection;
-use Rest\Http\Segments\MutableSegmentCollection;
 
 final class RestRequestBuilder
 {
@@ -19,9 +18,9 @@ final class RestRequestBuilder
 
     private(set) ?string $body = null;
 
-    private(set) MutableParameterCollection $headers;
+    private(set) MutableHeaderCollection $headers;
 
-    private(set) MutableParameterCollection $queryParameters;
+    private(set) MutableQueryParameterCollection $queryParameters;
 
     private(set) MutableSegmentCollection $segments;
 
@@ -38,8 +37,8 @@ final class RestRequestBuilder
 
     public function __construct(string $resource)
     {
-        $this->headers = new MutableParameterCollection();
-        $this->queryParameters = new MutableParameterCollection();
+        $this->headers = new MutableHeaderCollection();
+        $this->queryParameters = new MutableQueryParameterCollection();
         $this->segments = new MutableSegmentCollection();
 
         $this->withResource($resource);
@@ -73,7 +72,7 @@ final class RestRequestBuilder
         return $this;
     }
 
-    public function withHeader(string $name, string $value): self
+    public function withHeader(string $name, bool|float|int|string $value): self
     {
         $this->headers->add($name, $value);
 
@@ -81,7 +80,7 @@ final class RestRequestBuilder
     }
 
     /**
-     * @param array<string,string|string[]> $headers
+     * @param array<string,scalar|scalar[]> $headers
      */
     public function withHeaders(array $headers): self
     {
@@ -90,7 +89,7 @@ final class RestRequestBuilder
         return $this;
     }
 
-    public function replaceHeader(string $name, string $value): self
+    public function replaceHeader(string $name, bool|float|int|string $value): self
     {
         $this->headers->set($name, $value);
 
@@ -98,7 +97,7 @@ final class RestRequestBuilder
     }
 
     /**
-     * @param array<string,string|string[]> $headers
+     * @param array<string,scalar|scalar[]> $headers
      */
     public function replaceHeaders(array $headers): self
     {
@@ -107,7 +106,7 @@ final class RestRequestBuilder
         return $this;
     }
 
-    public function withQueryParameter(string $name, string $value): self
+    public function withQueryParameter(string $name, bool|float|int|string $value): self
     {
         $this->queryParameters->add($name, $value);
 
@@ -115,11 +114,21 @@ final class RestRequestBuilder
     }
 
     /**
-     * @param array<string,string|string[]> $queryParameters
+     * @param array<string,scalar|scalar[]> $queryParameters
      */
     public function withQueryParameters(array $queryParameters): self
     {
         $this->queryParameters->merge($queryParameters);
+
+        return $this;
+    }
+
+    /**
+     * @param array<string,scalar|scalar[]> $queryParameters
+     */
+    public function replaceQueryParameters(array $queryParameters): self
+    {
+        $this->queryParameters->replace($queryParameters);
 
         return $this;
     }
@@ -148,9 +157,9 @@ final class RestRequestBuilder
         return new RestRequest(
             resource: $this->resource,
             method: $this->method,
-            queryParameters: new ImmutableParameterCollection($this->queryParameters->all()),
-            headers: new ImmutableParameterCollection($this->headers->all()),
-            segments: new ImmutableSegmentCollection($this->segments->all()),
+            queryParameters: $this->queryParameters->toImmutable(),
+            headers: $this->headers->toImmutable(),
+            segments: $this->segments->toImmutable(),
             body: $this->body,
             authenticator: $this->authenticator,
         );

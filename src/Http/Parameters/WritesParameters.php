@@ -1,10 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Http\Parameters;
 
+/**
+ * @template TValue
+ */
 trait WritesParameters
 {
-    public function add(string $key, string $value): self
+    /**
+     * @param TValue $value
+     * @return self<TValue>
+     */
+    public function add(string $key, $value): self
     {
         if (! isset($this->parameters[$key])) {
             $this->parameters[$key] = [];
@@ -15,13 +24,20 @@ trait WritesParameters
         return $this;
     }
 
-    public function set(string $key, string $value): self
+    /**
+     * @param TValue $value
+     * @return self<TValue>
+     */
+    public function set(string $key, $value): self
     {
         $this->parameters[$key] = [$value];
 
         return $this;
     }
 
+    /**
+     * @return self<TValue>
+     */
     public function unset(string $key): self
     {
         unset($this->parameters[$key]);
@@ -30,7 +46,8 @@ trait WritesParameters
     }
 
     /**
-     * @param array<string,string|string[]> $parameters
+     * @param array<string,TValue|TValue[]> $parameters
+     * @return self<TValue>
      */
     public function merge(array $parameters): self
     {
@@ -48,7 +65,8 @@ trait WritesParameters
     }
 
     /**
-     * @param array<string,string|string[]> $parameters
+     * @param array<string,TValue|TValue[]> $parameters
+     * @return self<TValue>
      */
     public function replace(array $parameters): self
     {

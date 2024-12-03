@@ -1,6 +1,8 @@
 <?php
 
-namespace Rest\Http\Segments;
+declare(strict_types=1);
+
+namespace Rest\Http\Components\Segments;
 
 final class ImmutableSegmentCollection
 {

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Http\Response;
 
-use Rest\Http\Parameters\ImmutableParameterCollection;
+use Rest\Http\Components\Headers\ImmutableHeaderCollection;
 use Rest\Http\Request\RestRequest;
 use Rest\Http\StatusCode;
 
@@ -12,8 +14,9 @@ final readonly class RestResponse
         public RestRequest $request,
         public StatusCode $statusCode,
         public string $reasonPhrase = '',
-        public ImmutableParameterCollection $headers = new ImmutableParameterCollection(),
+        public ImmutableHeaderCollection $headers = new ImmutableHeaderCollection(),
         public ?string $body = null,
         public ?string $contentType = null,
-    ) {}
+    ) {
+    }
 }

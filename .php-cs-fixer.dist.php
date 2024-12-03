@@ -8,8 +8,9 @@ $finder = Symfony\Component\Finder\Finder::create()
          __DIR__ . '/tests',
      ])
      ->name('*.php')
-     ->ignoreDotFiles(true)
-     ->ignoreVCS(true);
+    ->notName('*Rest*Builder.php')
+    ->ignoreDotFiles(true)
+    ->ignoreVCS(true);
 
 return (new PhpCsFixer\Config())
     ->setCacheFile('.cache/fixer/cs-fixer.cache')

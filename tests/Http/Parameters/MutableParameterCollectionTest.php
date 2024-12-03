@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Tests\Http\Parameters;
 
 use PHPUnit\Framework\TestCase;
 use Rest\Http\Parameters\MutableParameterCollection;
 
+/**
+ * @internal
+ */
 class MutableParameterCollectionTest extends TestCase
 {
     public function test_adding_a_parameter()

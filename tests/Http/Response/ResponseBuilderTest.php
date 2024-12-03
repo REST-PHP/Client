@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Tests\Http\Response;
 
 use PHPUnit\Framework\TestCase;
-use Rest\Http\Parameters\ImmutableParameterCollection;
+use Rest\Http\Components\Headers\ImmutableHeaderCollection;
 use Rest\Http\Request\RestRequestBuilder;
 use Rest\Http\Response\RestResponse;
 use Rest\Http\Response\RestResponseBuilder;
 use Rest\Http\StatusCode;
 
+/**
+ * @internal
+ */
 class ResponseBuilderTest extends TestCase
 {
     public function test_making_a_response()
@@ -47,7 +52,7 @@ class ResponseBuilderTest extends TestCase
             request: new RestRequestBuilder('companies')->make(),
             statusCode: StatusCode::IM_A_TEAPOT,
             reasonPhrase: 'Testing',
-            headers: new ImmutableParameterCollection([
+            headers: new ImmutableHeaderCollection([
                 'Content-Type' => ['application/xml'],
             ]),
             body: 'Hello, world!'

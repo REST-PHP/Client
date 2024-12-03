@@ -1,6 +1,8 @@
 <?php
 
-namespace Rest\Http\Segments;
+declare(strict_types=1);
+
+namespace Rest\Http\Components\Segments;
 
 use RuntimeException;
 
@@ -10,7 +12,8 @@ trait ReadsSegments
      * @param array<string,string|int> $segments
      */
     final public function __construct(private array $segments = [])
-    {}
+    {
+    }
 
     public function get(string $segment): null|string|int
     {

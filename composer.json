@@ -22,6 +22,7 @@
     "require-dev": {
         "aidan-casey/mock-client": "dev-master",
         "ergebnis/composer-normalize": "dev-main",
+        "friendsofphp/php-cs-fixer": "dev-master",
         "nyholm/psr7": "^1.8@dev",
         "phpstan/phpstan": "2.0.x-dev",
         "phpunit/phpunit": "^11.4"
@@ -57,8 +58,10 @@
         "qa": [
             "@composer-normalize",
             "@composer-validate",
+            "@style",
             "@phpunit",
             "@phpstan"
-        ]
+        ],
+        "style": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --allow-risky=yes"
     }
 }

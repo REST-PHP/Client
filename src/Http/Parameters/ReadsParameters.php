@@ -1,30 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Http\Parameters;
 
+/**
+ * @template TValue
+ */
 trait ReadsParameters
 {
     /**
-     * @param array<string,string[]> $parameters
+     * @param array<string,TValue[]> $parameters
      */
     final public function __construct(private array $parameters = [])
-    {}
+    {
+    }
 
     /**
-     * @return array<string>|null
+     * @return array<TValue>|null
      */
     public function get(string $key): ?array
     {
         return $this->parameters[$key] ?? null;
     }
 
-    public function first(string $key): null|string
+    /**
+     * @return TValue|null
+     */
+    public function first(string $key)
     {
         return $this->parameters[$key][0] ?? null;
     }
 
     /**
-     * @return array<string,string[]>
+     * @return array<string,TValue[]>
      */
     public function all(): array
     {

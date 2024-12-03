@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Http\Segments;
 
 use PHPUnit\Framework\TestCase;
-use Rest\Http\Segments\MutableSegmentCollection;
+use Rest\Http\Components\Segments\MutableSegmentCollection;
 
+/**
+ * @internal
+ */
 class MutableSegmentTest extends TestCase
 {
     public function test_setting_segment()
