@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rest\Tests\Http\Components\QueryParameters;
 
 use PHPUnit\Framework\TestCase;
 use Rest\Http\Components\QueryParameters\ImmutableQueryParameterCollection;
 use Rest\Http\Components\QueryParameters\MutableQueryParameterCollection;
 
+/**
+ * @internal
+ */
 class MutableQueryParameterCollectionTest extends TestCase
 {
     public function test_getting_query_parameters()
@@ -63,7 +68,8 @@ class MutableQueryParameterCollectionTest extends TestCase
         $queryParameters->merge(['first_name' => 'Larry']);
 
         $this->assertEqualsCanonicalizing(
-            ['Jim', 'Dwight', 'Larry'], $queryParameters->get('first_name')
+            ['Jim', 'Dwight', 'Larry'],
+            $queryParameters->get('first_name')
         );
     }
 
@@ -76,14 +82,15 @@ class MutableQueryParameterCollectionTest extends TestCase
         $queryParameters->replace(['first_name' => 'Larry']);
 
         $this->assertEqualsCanonicalizing(
-            'Larry', $queryParameters->get('first_name')
+            'Larry',
+            $queryParameters->get('first_name')
         );
     }
 
     public function test_converting_to_immutable_collection()
     {
         $queryParameters = new MutableQueryParameterCollection([
-            'first_name' => ['Jim']
+            'first_name' => ['Jim'],
         ]);
 
         $queryParameters = $queryParameters->toImmutable();
