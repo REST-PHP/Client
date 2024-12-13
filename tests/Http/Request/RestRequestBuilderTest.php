@@ -119,7 +119,7 @@ final class RestRequestBuilderTest extends TestCase
             ])
             ->make();
 
-        $this->assertSame(['my-query'], $request->queryParameters->get('search'));
+        $this->assertSame('my-query', $request->queryParameters->get('search'));
         $this->assertSame(['John', 'Jack'], $request->queryParameters->get('first_name'));
     }
 
