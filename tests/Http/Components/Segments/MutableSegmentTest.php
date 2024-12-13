@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Http\Segments;
+namespace Rest\Tests\Http\Components\Segments;
 
 use PHPUnit\Framework\TestCase;
 use Rest\Http\Components\Segments\MutableSegmentCollection;

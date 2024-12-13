@@ -27,9 +27,13 @@ trait ReadsQueryParameters
      */
     public function get(string $name): null|array|bool|float|int|string
     {
-        return count($this->queryParameters) > 1
-            ? $this->queryParameters[$name]
-            : $this->first($name);
+        $value = $this->queryParameters[$name] ?? null;
+
+        if ($value === null) {
+            return null;
+        }
+
+        return count($value) > 1 ? $value : $value[0];
     }
 
     public function first(string $name): null|bool|float|int|string
